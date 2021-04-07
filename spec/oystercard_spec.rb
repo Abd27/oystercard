@@ -54,7 +54,7 @@ describe Oystercard do
       expect { subject.top_up(max_balance + 1) }.to raise_error "top up value can not be over #{max_balance}"
     end
     
-    it "refuse ride when less than minimum balance" do
+    it "refuse ride when less than #{Oystercard::MIN_BALANCE}" do
       expect { subject.touch_in }.to raise_error("insufficent balance")
     end  
 end
