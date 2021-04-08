@@ -1,8 +1,8 @@
 require 'oystercard'
 
 describe Oystercard do
-  let(:max_balance) { Oystercard::MAX_BALANCE }
-  let (:station){ double :station }
+  let(:max_balance)    { Oystercard::MAX_BALANCE }
+  let(:entry_station)  { double :station }
     
     it { is_expected.to be_an_instance_of Oystercard }
 
@@ -37,23 +37,23 @@ describe Oystercard do
       it { is_expected.to respond_to(:touch_out) }
 
       it "returns a true value when card touches out" do
-        subject.touch_in(station)
+        subject.touch_in(entry_station)
         subject.touch_out
         expect(subject).not_to be_in_journey
       end
 
       it 'stores the entry station when touch in' do
-        subject.touch_in(station)
-        expect(subject.entry_station).to eq(station)
+        subject.touch_in(entry_station)
+        expect(subject.entry_station).to eq(entry_station)
       end
       it 'deletes the entry station at touch out' do
-        subject.touch_in("station")
+        subject.touch_in(entry_station)
         subject.touch_out
         expect(subject.entry_station).to eq(nil)
       end
     end
     it 'refuses ride when less than minimum fare' do
-      expect {subject.touch_in(station)}.to raise_error('insufficient balance')
+      expect {subject.touch_in(entry_station)}.to raise_error('insufficient balance')
     end   
  
     it "does not allow a intial value over £90 to be topped up" do
@@ -61,6 +61,6 @@ describe Oystercard do
     end
     
     it "refuse ride when less than #{Oystercard::MIN_BALANCE}" do
-      expect { subject.touch_in(station) }.to raise_error('insufficient balance')
+      expect { subject.touch_in(entry_station) }.to raise_error('insufficient balance')
     end  
 end
