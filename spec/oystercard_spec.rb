@@ -4,13 +4,10 @@ describe Oystercard do
   let(:max_balance)    { Oystercard::MAX_BALANCE }
   let(:entry_station)  { double :station }
     
-    it { is_expected.to be_an_instance_of Oystercard }
 
-    it "can show a balance" do
-      expect(subject).to respond_to(:balance)
+    it "show a initial balance of zero" do
+      expect(subject.balance).to eq(0)
     end
-
-    it { expect(subject).to respond_to(:top_up).with(1).argument }
 
     it "enables you to top up by 5 pounds" do
       subject.top_up(5)
@@ -21,8 +18,6 @@ describe Oystercard do
       subject.top_up(max_balance)
       expect { subject.top_up(1) }.to raise_error "max balance #{max_balance} reached"
     end
-
-    it { is_expected.to respond_to(:touch_in) }
    
     describe "touch in and out" do
       before do
@@ -33,8 +28,6 @@ describe Oystercard do
         subject.touch_in('station')
         expect(subject).to be_in_journey
       end
-
-      it { is_expected.to respond_to(:touch_out) }
 
       it "returns a true value when card touches out" do
         subject.touch_in(entry_station)
