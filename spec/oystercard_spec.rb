@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
   let(:max_balance)    { Oystercard::MAX_BALANCE }
   let(:entry_station)  { double :station }
+  let(:exit_station)   { double :station }
     
 
     it "show a initial balance of zero" do
@@ -31,13 +32,13 @@ describe Oystercard do
       end
 
       it "lets the card be on journy once touched in" do
-        subject.touch_in('station')
+        subject.touch_in(entry_station)
         expect(subject).to be_in_journey
       end
 
-      it "returns a true value when card touches out" do
+      it 'in_journey should be false after touch_out' do
         subject.touch_in(entry_station)
-        subject.touch_out
+        subject.touch_out(exit_station)
         expect(subject).not_to be_in_journey
       end
 
@@ -45,11 +46,14 @@ describe Oystercard do
         subject.touch_in(entry_station)
         expect(subject.entry_station).to eq(entry_station)
       end
-      it 'deletes the entry station at touch out' do
+      xit 'deletes the entry station at touch out' do
         subject.touch_in(entry_station)
         subject.touch_out
         expect(subject.entry_station).to eq(nil)
       end
+
+      it { is_expected.to respond_to(:touch_out).with(1).argument }
+
     end
     it 'refuses ride when less than minimum fare' do
       expect {subject.touch_in(entry_station)}.to raise_error('insufficient balance')
