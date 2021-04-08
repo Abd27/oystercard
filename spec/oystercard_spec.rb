@@ -60,9 +60,19 @@ describe Oystercard do
       it 'stores the exit station' do 
         subject.touch_out(exit_station)
         expect(subject.exit_station).to eq(exit_station)
-      end  
-
+      end
+      describe 'previous_journeys' do
+        it { expect(subject).to respond_to(:save_journey).with(2).arguments }
+        it { expect(subject.journey_list).to be_empty }
+  
+        it 'stores previous journey' do
+          subject.touch_in(entry_station)
+          subject.touch_out(exit_station)
+          expect(subject.journey_list).to include({:entry => entry_station, :exit => exit_station})
+        end
+      end
     end
+
     it 'refuses ride when less than minimum fare' do
       expect {subject.touch_in(entry_station)}.to raise_error('insufficient balance')
     end 
