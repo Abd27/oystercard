@@ -46,20 +46,23 @@ describe Oystercard do
         subject.touch_in(entry_station)
         expect(subject.entry_station).to eq(entry_station)
       end
-      xit 'deletes the entry station at touch out' do
+      it 'deletes the entry station at touch out' do
         subject.touch_in(entry_station)
-        subject.touch_out
+        subject.touch_out(exit_station)
         expect(subject.entry_station).to eq(nil)
       end
 
       it { is_expected.to respond_to(:touch_out).with(1).argument }
 
+      it 'deducts minimum fare from balance when journey is complete' do
+        subject.touch_in(entry_station)
+        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-1)
+      end
+
     end
     it 'refuses ride when less than minimum fare' do
       expect {subject.touch_in(entry_station)}.to raise_error('insufficient balance')
     end   
- 
-
     
     it "refuse ride when less than minimum fare" do
       expect { subject.touch_in(entry_station) }.to raise_error('insufficient balance')
