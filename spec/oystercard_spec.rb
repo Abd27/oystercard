@@ -52,8 +52,6 @@ describe Oystercard do
         expect(subject.entry_station).to eq(nil)
       end
 
-      it { is_expected.to respond_to(:touch_out).with(1).argument }
-
       it 'deducts minimum fare from balance when journey is complete' do
         subject.touch_in(entry_station)
         expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-1)
