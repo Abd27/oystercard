@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   let(:max_balance)    { Oystercard::MAX_BALANCE }
+  let(:min_fare)       { Oystercard::MIN_FARE }
   let(:entry_station)  { double :station }
   let(:exit_station)   { double :station }
     
@@ -54,7 +55,7 @@ describe Oystercard do
 
       it 'deducts minimum fare from balance when journey is complete' do
         subject.touch_in(entry_station)
-        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-1)
+        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(min_fare)
       end
 
       it 'stores the exit station' do 
