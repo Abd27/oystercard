@@ -21,10 +21,6 @@ describe Oystercard do
         subject.top_up(max_balance)
         expect { subject.top_up(1) }.to raise_error "max balance #{max_balance} reached"
       end
-
-      it "does not allow an initial top up of more then the max limit" do
-        expect { subject.top_up(max_balance + 1) }.to raise_error "top up value can not be over #{max_balance}"
-      end
     end  
    
     describe "touch in and out" do
@@ -55,7 +51,7 @@ describe Oystercard do
 
       it 'deducts minimum fare from balance when journey is complete' do
         subject.touch_in(entry_station)
-        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(min_fare)
+        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-min_fare)
       end
 
       it 'stores the exit station' do 
